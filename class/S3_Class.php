@@ -1,13 +1,12 @@
 <?php
-require_once('../includes/aws/aws-autoloader.php');
-
+require_once '../includes/aws/aws-autoloader.php';
 class S3_class
 {
     protected  $s3_AccesKey;
     protected  $s3_SecretKey;
     protected  $s3_Bucket;
 
-    public function __construct( $s3_AccesKey,  $s3_SecretKey,  $s3_Bucket)
+    public function __construct($s3_AccesKey,  $s3_SecretKey,  $s3_Bucket)
     {
         $this->s3_AccesKey = $s3_AccesKey;
         $this->s3_SecretKey = $s3_SecretKey;

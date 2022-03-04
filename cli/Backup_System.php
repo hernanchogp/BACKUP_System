@@ -1,4 +1,5 @@
 <?php
+chdir(__DIR__);
 require_once '../class/Mysql_Class.php';
 require_once '../class/Moodle_Class.php';
 require_once '../class/Zip_Class.php';
