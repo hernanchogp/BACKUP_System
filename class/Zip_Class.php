@@ -2,10 +2,10 @@
 
 class Zip_Class  extends ZipArchive
 {
-    protected string $pathSource;
-    protected string $pathDestination;
+    protected $pathSource;
+    protected  $pathDestination;
 
-    public function __construct(string $pathSource,  string $pathDestination)
+    public function __construct( $pathSource, $pathDestination)
     {
         $this->pathSource = $pathSource;
         $this->pathDestination = $pathDestination;

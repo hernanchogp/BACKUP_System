@@ -2,10 +2,10 @@
 
 class Moodle_Class
 {
-    protected array $pathcopy;
-    protected string $pathbk;
+    protected  $pathcopy;
+    protected  $pathbk;
 
-    public function __construct(array $pathcopy,  string $pathbk)
+    public function __construct( $pathcopy,   $pathbk)
     {
         $this->pathcopy = $pathcopy;
         $this->pathbk = $pathbk;

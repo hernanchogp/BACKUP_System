@@ -1,0 +1,13 @@
+#---------------------------------------#
+# Header Block #
+#---------------------------------------#
+
+### Header Line
+
+## Section
+
+# Comment
+
+# filename
+/config/*.*
+/config/*.php

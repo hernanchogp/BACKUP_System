@@ -2,13 +2,13 @@
 
 class Mysql_Class
 {
-    protected string $dbhost;
-    protected string $dbname;
-    protected string $dbuser;
-    protected string $dbpass;
-    protected string $pathbk;
+    protected  $dbhost;
+    protected  $dbname;
+    protected  $dbuser;
+    protected  $dbpass;
+    protected  $pathbk;
 
-    public function __construct(string $dbhost, string $dbname, string $dbuser, string $dbpass, string $pathbk)
+    public function __construct($dbhost, $dbname,  $dbuser,  $dbpass, $pathbk)
     {
         $this->dbhost = $dbhost;
         $this->dbname = $dbname;
