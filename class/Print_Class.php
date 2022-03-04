@@ -48,7 +48,7 @@ class Print_Class
             $time_used / 86400,
             $time_used / 3600 % 24,
             $time_used / 60 % 60,
-            $time_used % 60,
+            $time_used % 60
 
         );
         $this->last_time = microtime(true);

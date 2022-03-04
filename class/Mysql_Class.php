@@ -22,10 +22,10 @@ class Mysql_Class
         
         $resultdump = shell_exec("mysqldump --user={$this->dbuser} --password={$this->dbpass} --host={$this->dbhost} {$this->dbname} --result-file={$filebk} 2>&1");
 
-        if ($resultdump != '') {
+        /*if ($resultdump != '') {
             unlink($filebk);
             throw new Exception("BACKUP generation error DUMP " . $resultdump);
-        }
+        }//*/
 
         return $filebk;
     }
