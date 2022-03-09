@@ -19,13 +19,13 @@ class Mysql_Class
     public function generarDump()
     {
         $filebk = $this->pathbk . '/' . $this->dbname . "-" . date("Y-m-d-H-i-s") . ".sql";
-        
         $resultdump = shell_exec("mysqldump --user={$this->dbuser} --password={$this->dbpass} --host={$this->dbhost} {$this->dbname} --result-file={$filebk} 2>&1");
-
-        /*if ($resultdump != '') {
+        //die("<pre>" . print_r($resultdump, true) . "</pre>");
+        $error = strpos($resultdump, 'Got error');
+        if ($error !== false) {
             unlink($filebk);
             throw new Exception("BACKUP generation error DUMP " . $resultdump);
-        }//*/
+        }
 
         return $filebk;
     }

@@ -5,7 +5,7 @@ class Zip_Class  extends ZipArchive
     protected $pathSource;
     protected  $pathDestination;
 
-    public function __construct( $pathSource, $pathDestination)
+    public function __construct($pathSource, $pathDestination)
     {
         $this->pathSource = $pathSource;
         $this->pathDestination = $pathDestination;
@@ -13,13 +13,18 @@ class Zip_Class  extends ZipArchive
 
     public function addDir($location, $name)
     {
-        $this->addEmptyDir($name);
-        $this->addDirFull($location, $name);
+        if (is_dir($location)) {
+            $this->addEmptyDir($name);
+            $this->addDirFull($location, $name);
+        } else {           
+            $this->addFile($location, $name);
+        }
     }
     private function addDirFull($location, $name)
     {
         $name .= '/';
         $location .= '/';
+
         $dir = opendir($location);
         while ($file = readdir($dir)) {
             if ($file == '.' || $file == '..') continue;
@@ -27,21 +32,32 @@ class Zip_Class  extends ZipArchive
             $this->$do($location . $file, $name . $file);
         }
     }
-    function generateZip()
+
+    private function validatePathSource()
+    {
+        foreach ($this->pathSource as $path) {
+            if (!is_dir($path) && !file_exists($path)) {
+                throw new Exception("The directory or file does not exist =>" . $path);
+            }
+        }
+    }
+
+    public function generateZip()
     {
         if (!extension_loaded('zip')) {
             throw new Exception("The ZIP extension is not loaded");
         }
-        if (!file_exists($this->pathSource)) {
-            throw new Exception("Directory does not exist " . $this->pathSource);
-        }
+        $this->validatePathSource();
         $zipName =  $this->pathDestination . '/' . "BK-" . date("Y-m-d") . ".zip";
         $res = $this->open($zipName, ZipArchive::CREATE);
         if ($res === TRUE) {
-            $this->addDir($this->pathSource, basename($this->pathSource));
+            foreach ($this->pathSource as $path) {
+
+                $this->addDir($path, basename($path));
+            }
             $this->close();
         } else {
-            throw new Exception("Unable to create ZIP file ".$zipName);
+            throw new Exception("Unable to create ZIP file " . $zipName);
         }
         return $zipName;
     }
