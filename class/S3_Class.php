@@ -1,5 +1,7 @@
 <?php
 require_once '../includes/aws/aws-autoloader.php';
+use Aws\Exception\MultipartUploadException;
+use Aws\S3\MultipartUploader;
 class S3_class
 {
     protected  $s3_AccesKey;
@@ -129,6 +131,36 @@ class S3_class
             throw new Exception($e->getMessage());
         }
         //
+        unset($s3Client);
+        unset($sdk);
+        return $retornar;
+    }
+    public function cargarArchivoS3Multiple($file_Path, $refBucket)
+    {
+        $retornar = "";
+        $sharedConfig = [
+            'region' => 'us-east-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $this->s3_AccesKey,
+                'secret' => $this->s3_SecretKey
+            ]
+        ];
+        $key = basename($file_Path);
+        $sdk = new Aws\Sdk($sharedConfig);
+        $s3Client = $sdk->createS3();
+        
+        $uploader = new MultipartUploader($s3Client, $file_Path, [
+            'Bucket' => $this->s3_Bucket,
+            'Key'    => $refBucket . "/" . $key,
+        ]);
+        
+        try {
+            $result = $uploader->upload();
+            $retornar = "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
+        } catch (MultipartUploadException $e) {
+            throw new Exception($e->getMessage());
+        }
         unset($s3Client);
         unset($sdk);
         return $retornar;

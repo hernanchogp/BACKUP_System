@@ -29,7 +29,7 @@ $objPrint->render('Validation finish backup directory. ', 1);
 try {
     $refBucket = date('Ymd');
     $objS3 = new S3_class(S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET);
-    $salida = $objS3->cargarArchivoS3($nameZip, $refBucket);
+    $salida = $objS3->cargarArchivoS3Multiple($nameZip, $refBucket);
     $objPrint->render($salida, 2);
     //unlink($nameZip);
 } catch (Exception $ex) {
