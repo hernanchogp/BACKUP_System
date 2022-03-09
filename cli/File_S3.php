@@ -29,8 +29,8 @@ $objPrint->render('Validation finish backup directory. ', 1);
 try {
     $refBucket = date('Ymd');
     $objS3 = new S3_class(S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET);
-    $objS3->cargarArchivoS3($nameZip, $refBucket);
-    $objPrint->render('Finish ZIP file transfer process to S3...', 2);
+    $salida = $objS3->cargarArchivoS3($nameZip, $refBucket);
+    $objPrint->render($salida, 2);
     unlink($nameZip);
 } catch (Exception $ex) {
     $objPrint->render('A novelty was file or S3 transfer ' . $ex->getMessage(), 2);

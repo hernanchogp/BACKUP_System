@@ -125,8 +125,8 @@ class S3_class
                 'Body'   => fopen($file_Path, 'r')
             ]);
             $retornar = "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
-        } catch (Aws\S3\Exception\S3Exception $e) {
-            $retornar = $e->getMessage();
+        } catch (Aws\S3\Exception\S3Exception $e) {          
+            throw new Exception($e->getMessage());
         }
         //
         unset($s3Client);
