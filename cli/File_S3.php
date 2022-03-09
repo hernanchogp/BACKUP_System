@@ -31,7 +31,7 @@ try {
     $objS3 = new S3_class(S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET);
     $salida = $objS3->cargarArchivoS3($nameZip, $refBucket);
     $objPrint->render($salida, 2);
-    unlink($nameZip);
+    //unlink($nameZip);
 } catch (Exception $ex) {
     $objPrint->render('A novelty was file or S3 transfer ' . $ex->getMessage(), 2);
     die;
