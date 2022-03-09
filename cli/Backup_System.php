@@ -42,8 +42,7 @@ $objPrint->render('Start DB dump generation... ' . $dbname, 2);
 $objBD = new Mysql_Class($dbhost, $dbname, $dbuser, $dbpass, $pathBK);
 try {
     $filedump = $objBD->generarDump();
-} catch (Exception $ex) {
-    die($filedump);
+} catch (Exception $ex) {    
     $objPrint->render('A novelty was presented in the DUMP generation process.' . $ex->getMessage(), 2);
     die;
 }
