@@ -48,7 +48,7 @@ try {
     die;
 }
 $objPrint->render('DUMP generation process Finish...', 2);
-die;
+
 //Generar zip
 
 $objPrint->render('Start ZIP generation process and upload to S3...', 3);
