@@ -18,10 +18,14 @@ if (!is_dir(PATH_BACKUP) || !file_exists(PATH_BACKUP)) {
 }
 
 $pathBK = PATH_BACKUP;
+$nameZip = PATH_BACKUP . '/' . 'backup_moodle.tar.gz';
+if (!file_exists($nameZip)) {
+    $objPrint->render('The File BACKUP does not exist or is not valid. ' . $nameZip, 5);
+    exit;
+}
 
 $objPrint->render('Validation finish backup directory. ', 1);
 
-$nameZip = PATH_BACKUP . '/' . 'backup_moodle.tar.gz';
 try {
     $refBucket = date('Ymd');
     $objS3 = new S3_class(S3_ACCESSKEY, S3_SECRETKEY, S3_BUCKET);
