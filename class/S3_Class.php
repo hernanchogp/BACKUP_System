@@ -1,7 +1,9 @@
 <?php
 require_once '../includes/aws/aws-autoloader.php';
+
 use Aws\Exception\MultipartUploadException;
 use Aws\S3\MultipartUploader;
+
 class S3_class
 {
     protected  $s3_AccesKey;
@@ -127,7 +129,7 @@ class S3_class
                 'Body'   => fopen($file_Path, 'r')
             ]);
             $retornar = "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
-        } catch (Aws\S3\Exception\S3Exception $e) {          
+        } catch (Aws\S3\Exception\S3Exception $e) {
             throw new Exception($e->getMessage());
         }
         //
@@ -137,7 +139,7 @@ class S3_class
     }
     public function cargarArchivoS3Multiple($file_Path, $refBucket)
     {
-        $retornar = "";
+        /*$retornar = "";
         $sharedConfig = [
             'region' => 'us-east-1',
             'version' => 'latest',
@@ -160,6 +162,50 @@ class S3_class
             $retornar = "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
         } catch (MultipartUploadException $e) {
             throw new Exception($e->getMessage());
+        }
+        unset($s3Client);
+        unset($sdk);
+        return $retornar;//*/
+
+        $retornar = "";
+        $sharedConfig = [
+            'region' => 'us-east-1',
+            'version' => 'latest',
+            'credentials' => [
+                'key' => $this->s3_AccesKey,
+                'secret' => $this->s3_SecretKey
+            ]
+        ];
+        $key = basename($file_Path);
+        $sdk = new Aws\Sdk($sharedConfig);
+        $s3Client = $sdk->createS3();
+
+        $source = $file_Path;
+        $uploader = new MultipartUploader($s3Client, $source, [
+            'Bucket' => $this->s3_Bucket,
+            'Key'    => $refBucket . "/" . $key,
+        ]);
+
+        //Recover from errors
+        do {
+            try {
+                $result = $uploader->upload();
+            } catch (MultipartUploadException $e) {
+                $uploader = new MultipartUploader($s3Client, $source, [
+                    'state' => $e->getState(),
+                ]);
+            }
+        } while (!isset($result));
+
+        //Abort a multipart upload if failed
+        try {
+            $result = $uploader->upload();
+            $retornar = "Image uploaded successfully. Image path is: " . $result->get('ObjectURL');
+        } catch (MultipartUploadException $e) {
+            // State contains the "Bucket", "Key", and "UploadId"
+            $params = $e->getState()->getId();
+            $result = $s3Client->abortMultipartUpload($params);
+            throw new Exception($result);
         }
         unset($s3Client);
         unset($sdk);
